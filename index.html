@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Register</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        /* Custom styles for better focus and aesthetics */
+        input:focus, select:focus, button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.45); /* Tailwind's blue-500 with opacity */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-8">
+
+    <div class="w-full max-w-5xl">
+        <!-- Header Card -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 mb-6 overflow-hidden">
+            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-t-xl">
+                <h2 class="text-3xl font-extrabold text-center">Fee Register</h2>
+                <p class="text-blue-100 text-center mt-2 text-md">Managed by Anurag Maheshwari and Company</p>
+            </div>
+        </div>
+
+        <!-- CA Logo and Static Company Name -->
+        <div class="flex items-center justify-center gap-2 mb-4">
+            <img src="https://content.googleapis.com/v1/files/uploaded:CA_India_Logo.png-3730ebe2-d07-4775-abbd-9e203964f871?alt=media" alt="CA INDIA Logo" class="max-h-12 max-w-24 object-contain border border-gray-300 rounded-lg">
+            <p class="text-center text-gray-600 text-sm font-bold">Property: Anurag Maheshwari and Company</p>
+        </div>
+
+        <!-- Main Form Card -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+            <div class="p-6">
+                <form id="feeRegisterForm" class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <div class="space-y-2">
+                                <label for="entryDate" class="text-sm font-medium leading-none">Date <span class="text-red-500">*</span></label>
+                                <input type="date" id="entryDate" name="entryDate" required class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+
+                            <!-- New Fee Mode Dropdown -->
+                            <div class="space-y-2">
+                                <label for="feeMode" class="text-sm font-medium leading-none">Fee Mode <span class="text-red-500">*</span></label>
+                                <select id="feeMode" name="feeMode" required class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                    <option value="monthly">Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                </select>
+                            </div>
+
+                            <!-- Dynamic Month / Quarter Dropdown -->
+                            <div class="space-y-2">
+                                <label id="feePeriodLabel" for="feeMonth" class="text-sm font-medium leading-none">Fee Month <span class="text-red-500">*</span></label>
+                                <select id="feeMonth" name="feeMonth" required class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                    <option value="">Select Month</option>
+                                    <option value="January">January</option>
+                                    <option value="February">February</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
+                                </select>
+                                <select id="feeQuarter" name="feeQuarter" required class="hidden flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                    <option value="">Select Quarter</option>
+                                    <option value="Q1 (Jan-Mar)">Q1 (Jan-Mar)</option>
+                                    <option value="Q2 (Apr-Jun)">Q2 (Apr-Jun)</option>
+                                    <option value="Q3 (Jul-Sep)">Q3 (Jul-Sep)</option>
+                                    <option value="Q4 (Oct-Dec)">Q4 (Oct-Dec)</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="receiptNumber" class="text-sm font-medium leading-none">Receipt No. <span class="text-red-500">*</span></label>
+                                <div class="flex items-center gap-2">
+                                    <input type="text" id="receiptNumber" name="receiptNumber" readonly class="flex-1 h-10 rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 cursor-not-allowed">
+                                    <button type="button" id="resetReceiptCounter" class="px-3 py-2 rounded-md font-semibold text-white bg-gray-500 hover:bg-gray-600 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">Reset</button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="rollNumber" class="text-sm font-medium leading-none">Roll No. of Student <span class="text-red-500">*</span></label>
+                                <input type="text" id="rollNumber" name="rollNumber" required class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="studentName" class="text-sm font-medium leading-none">Student Name <span class="text-red-500">*</span></label>
+                                <input type="text" id="studentName" name="studentName" required class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <h3 class="text-lg font-semibold text-gray-800">Fee Amounts</h3>
+                            <div class="space-y-2">
+                                <label for="admissionFee" class="text-sm font-medium leading-none">Admission Fee (₹)</label>
+                                <input type="number" id="admissionFee" name="admissionFee" step="0.01" value="0" class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="annualFee" class="text-sm font-medium leading-none">Annual Fee (₹)</label>
+                                <input type="number" id="annualFee" name="annualFee" step="0.01" value="0" class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="tuitionFee" class="text-sm font-medium leading-none">Tuition Fee (₹)</label>
+                                <input type="number" id="tuitionFee" name="tuitionFee" step="0.01" value="0" class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="transportFee" class="text-sm font-medium leading-none">Transport Fee (₹)</label>
+                                <input type="number" id="transportFee" name="transportFee" step="0.01" value="0" class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="otherCharges" class="text-sm font-medium leading-none">Other Charges / Fee (₹)</label>
+                                <input type="number" id="otherCharges" name="otherCharges" step="0.01" value="0" class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="totalFee" class="text-sm font-medium leading-none">Total Fee (₹)</label>
+                                <input type="number" id="totalFee" name="totalFee" readonly class="flex h-10 w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 text-sm ring-offset-white cursor-not-allowed">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="receivedMode" class="text-sm font-medium leading-none">Received Mode <span class="text-red-500">*</span></label>
+                                <select id="receivedMode" name="receivedMode" required class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                    <option value="">Select Mode</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="upi">UPI</option>
+                                    <option value="bank-transfer">Bank Transfer</option>
+                                </select>
+                            </div>
+
+                            <div id="bankDetailsFields" class="space-y-4 hidden">
+                                <div class="space-y-2">
+                                    <label for="bankName" class="text-sm font-medium leading-none">Bank Name</label>
+                                    <input type="text" id="bankName" name="bankName" class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="upiId" class="text-sm font-medium leading-none">UPI ID</label>
+                                    <input type="text" id="upiId" name="upiId" class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="otherRemarks" class="text-sm font-medium leading-none">Other Remarks</label>
+                                <input type="text" id="otherRemarks" name="otherRemarks" class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="feeCollectedBy" class="text-sm font-medium leading-none">Fee Collected By <span class="text-red-500">*</span></label>
+                                <input type="text" id="feeCollectedBy" name="feeCollectedBy" required class="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center md:justify-end mt-8">
+                        <button type="submit" id="submitButton" class="w-full md:w-auto px-8 py-3 text-lg rounded-full font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            Submit Fee
+                        </button>
+                    </div>
+
+                    <!-- Submission Result Message -->
+                    <div id="submitResultMessage" class="hidden p-4 mt-6 rounded-lg text-center font-medium"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <iframe id="hiddenIframe" name="hiddenIframe" style="display:none;"></iframe>
+
+    <script>
+        // Get DOM elements
+        const feeRegisterForm = document.getElementById('feeRegisterForm');
+        const submitButton = document.getElementById('submitButton');
+        const submitResultMessage = document.getElementById('submitResultMessage');
+
+        const entryDateInput = document.getElementById('entryDate');
+        const feeModeSelect = document.getElementById('feeMode'); // New Fee Mode dropdown
+        const feePeriodLabel = document.getElementById('feePeriodLabel'); // Label for Month/Quarter
+        const feeMonthSelect = document.getElementById('feeMonth');
+        const feeQuarterSelect = document.getElementById('feeQuarter'); // New Quarter dropdown
+        const receiptNumberInput = document.getElementById('receiptNumber');
+        const resetReceiptCounterButton = document.getElementById('resetReceiptCounter');
+        const rollNumberInput = document.getElementById('rollNumber');
+        const studentNameInput = document.getElementById('studentName');
+
+        const admissionFeeInput = document.getElementById('admissionFee');
+        const annualFeeInput = document.getElementById('annualFee');
+        const tuitionFeeInput = document.getElementById('tuitionFee');
+        const transportFeeInput = document.getElementById('transportFee');
+        const otherChargesInput = document.getElementById('otherCharges');
+        const totalFeeInput = document.getElementById('totalFee');
+
+        const receivedModeSelect = document.getElementById('receivedMode');
+        const bankDetailsFields = document.getElementById('bankDetailsFields');
+        const bankNameInput = document.getElementById('bankName');
+        const upiIdInput = document.getElementById('upiId');
+        const otherRemarksInput = document.getElementById('otherRemarks');
+        const feeCollectedByInput = document.getElementById('feeCollectedBy');
+
+        // --- Receipt Number Counter ---
+        const RECEIPT_COUNTER_KEY = 'feeRegisterReceiptCounter'; // Unique key for Project 2
+        const STARTING_RECEIPT_NUMBER = 1;
+
+        function getNextReceiptNumber() {
+            let lastReceiptNumber = parseInt(localStorage.getItem(RECEIPT_COUNTER_KEY) || STARTING_RECEIPT_NUMBER.toString(), 10);
+            if (isNaN(lastReceiptNumber)) {
+                lastReceiptNumber = STARTING_RECEIPT_NUMBER;
+            }
+            return lastReceiptNumber;
+        }
+
+        function incrementAndSaveReceiptNumber() {
+            let nextNumber = getNextReceiptNumber();
+            nextNumber++;
+            localStorage.setItem(RECEIPT_COUNTER_KEY, nextNumber.toString());
+            return nextNumber;
+        }
+
+        function updateReceiptNumberField() {
+            if (receiptNumberInput) {
+                receiptNumberInput.value = getNextReceiptNumber();
+            }
+        }
+
+        if (resetReceiptCounterButton) {
+            resetReceiptCounterButton.addEventListener('click', () => {
+                localStorage.setItem(RECEIPT_COUNTER_KEY, STARTING_RECEIPT_NUMBER.toString()); // Set directly to 1
+                updateReceiptNumberField();
+                submitResultMessage.textContent = 'Receipt counter reset to ' + STARTING_RECEIPT_NUMBER + '.';
+                submitResultMessage.classList.remove('hidden', 'bg-red-100', 'text-red-800', 'border-red-300');
+                submitResultMessage.classList.add('bg-blue-100', 'text-blue-800', 'border', 'border-blue-300');
+            });
+        }
+        // --- End Receipt Number Counter ---
+
+        // --- Fee Mode and Period Handling ---
+        function updateFeePeriodFields() {
+            if (feeModeSelect.value === 'monthly') {
+                feePeriodLabel.textContent = 'Fee Month *';
+                feePeriodLabel.htmlFor = 'feeMonth';
+                feeMonthSelect.classList.remove('hidden');
+                feeMonthSelect.setAttribute('required', 'true');
+                feeQuarterSelect.classList.add('hidden');
+                feeQuarterSelect.removeAttribute('required');
+            } else if (feeModeSelect.value === 'quarterly') {
+                feePeriodLabel.textContent = 'Fee Quarter *';
+                feePeriodLabel.htmlFor = 'feeQuarter';
+                feeMonthSelect.classList.add('hidden');
+                feeMonthSelect.removeAttribute('required');
+                feeQuarterSelect.classList.remove('hidden');
+                feeQuarterSelect.setAttribute('required', 'true');
+            }
+        }
+        feeModeSelect.addEventListener('change', updateFeePeriodFields);
+        // --- End Fee Mode and Period Handling ---
+
+        // --- Total Fee Calculation ---
+        function calculateTotalFee() {
+            const admissionFee = parseFloat(admissionFeeInput.value) || 0;
+            const annualFee = parseFloat(annualFeeInput.value) || 0;
+            const tuitionFee = parseFloat(tuitionFeeInput.value) || 0;
+            const transportFee = parseFloat(transportFeeInput.value) || 0;
+            const otherCharges = parseFloat(otherChargesInput.value) || 0;
+            const total = admissionFee + annualFee + tuitionFee + transportFee + otherCharges;
+            totalFeeInput.value = total.toFixed(2); // Keep two decimal places
+        }
+
+        admissionFeeInput.addEventListener('input', calculateTotalFee);
+        annualFeeInput.addEventListener('input', calculateTotalFee);
+        tuitionFeeInput.addEventListener('input', calculateTotalFee);
+        transportFeeInput.addEventListener('input', calculateTotalFee);
+        otherChargesInput.addEventListener('input', calculateTotalFee);
+        // --- End Total Fee Calculation ---
+
+        // --- Received Mode Conditional Fields ---
+        function updateReceivedModeFields() {
+            if (receivedModeSelect.value === 'upi' || receivedModeSelect.value === 'bank-transfer') {
+                bankDetailsFields.classList.remove('hidden');
+                bankNameInput.setAttribute('required', 'true');
+                if (receivedModeSelect.value === 'upi') {
+                    upiIdInput.setAttribute('required', 'true');
+                } else {
+                    upiIdInput.removeAttribute('required');
+                }
+            } else {
+                bankDetailsFields.classList.add('hidden');
+                bankNameInput.removeAttribute('required');
+                upiIdInput.removeAttribute('required');
+            }
+        }
+        receivedModeSelect.addEventListener('change', updateReceivedModeFields);
+        // --- End Received Mode Conditional Fields ---
+
+
+        // --- Backend URL for Project 2 (PLACEHOLDER) ---
+        // You will replace this with the actual deployed URL of your NEW Google Apps Script for Project 2
+        const backendWebAppUrl = 'YOUR_PROJECT2_APPS_SCRIPT_WEB_APP_URL_HERE'; 
+
+        // Handle form submission
+        feeRegisterForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            console.log("Form submission triggered.");
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+            submitResultMessage.classList.add('hidden');
+
+            const payload = {};
+            payload.company = "Anurag Maheshwari and Company"; // Static value
+            payload.type = "FeeRegister"; // New form type identifier
+
+            payload.entryDate = entryDateInput.value;
+            payload.feeMode = feeModeSelect.value; // Add feeMode
+            payload.feePeriod = feeModeSelect.value === 'monthly' ? feeMonthSelect.value : feeQuarterSelect.value; // Get selected month or quarter
+            payload.receiptNumber = receiptNumberInput.value;
+            payload.rollNumber = rollNumberInput.value;
+            payload.studentName = studentNameInput.value;
+            payload.admissionFee = parseFloat(admissionFeeInput.value) || 0;
+            payload.annualFee = parseFloat(annualFeeInput.value) || 0;
+            payload.tuitionFee = parseFloat(tuitionFeeInput.value) || 0;
+            payload.transportFee = parseFloat(transportFeeInput.value) || 0;
+            payload.otherCharges = parseFloat(otherChargesInput.value) || 0;
+            payload.totalFee = parseFloat(totalFeeInput.value) || 0;
+            payload.receivedMode = receivedModeSelect.value;
+            payload.bankName = bankNameInput.value;
+            payload.upiId = upiIdInput.value;
+            payload.otherRemarks = otherRemarksInput.value;
+            payload.feeCollectedBy = feeCollectedByInput.value;
+
+            console.log("Payload to be sent:", payload);
+
+            // --- IFRAME SUBMISSION LOGIC ---
+            const form = document.createElement('form');
+            form.action = backendWebAppUrl;
+            form.method = 'POST';
+            form.target = 'hiddenIframe';
+            form.style.display = 'none';
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'jsonPayload';
+            input.value = JSON.stringify(payload);
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+
+            form.submit();
+
+            const hiddenIframe = document.getElementById('hiddenIframe');
+            let iframeLoadTimeout;
+
+            hiddenIframe.onload = null; 
+            
+            iframeLoadTimeout = setTimeout(() => {
+                console.warn("Iframe load timed out. Check Apps Script logs for errors.");
+                submitResultMessage.textContent = 'Submission timed out. Please check Apps Script logs or network.';
+                submitResultMessage.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'border-green-300');
+                submitResultMessage.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-300');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Fee';
+                document.body.removeChild(form);
+            }, 10000);
+
+            hiddenIframe.onload = () => {
+                clearTimeout(iframeLoadTimeout);
+                try {
+                    submitResultMessage.textContent = 'Fee recorded successfully!';
+                    submitResultMessage.classList.remove('hidden', 'bg-red-100', 'text-red-800', 'border-red-300');
+                    submitResultMessage.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-300');
+                    console.log("Form submission successful. Check Google Sheet.");
+
+                    // Reset form fields after success
+                    feeRegisterForm.reset();
+                    entryDateInput.value = new Date().toISOString().split('T')[0]; // Reset date to today
+                    calculateTotalFee(); // Recalculate total after reset (should be 0)
+                    updateReceivedModeFields(); // Reset visibility for bank details
+                    incrementAndSaveReceiptNumber(); // Increment counter on success
+                    updateReceiptNumberField(); // Update field with new number
+                    updateFeePeriodFields(); // Reset fee period visibility
+
+                } catch (iframeError) {
+                    console.error("Error reading iframe response:", iframeError);
+                    submitResultMessage.textContent = 'Fee submitted, but response could not be confirmed. Check Google Sheet.';
+                    submitResultMessage.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'border-red-300');
+                    submitResultMessage.classList.add('bg-yellow-600', 'text-white');
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Submit Fee';
+                    document.body.removeChild(form);
+                }
+            };
+        });
+
+        // Initial setup on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            entryDateInput.value = new Date().toISOString().split('T')[0]; // Set default date
+            calculateTotalFee(); // Initial calculation (should be 0)
+            updateReceivedModeFields(); // Set initial visibility for bank details
+            updateReceiptNumberField(); // Set initial receipt number
+            updateFeePeriodFields(); // Set initial fee period visibility (Monthly by default)
+        });
+    </script>
+</body>
+</html>
